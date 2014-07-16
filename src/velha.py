@@ -10,8 +10,10 @@ print("oi")
 TIRAS = [[(x*SP, y*SP, z*SP) for x in TAM] for y in TAM for z in TAM]+[
         [(x*SP, y*SP, z*SP) for z in TAM] for x in TAM for y in TAM]+[
     [(x*SP, y*SP, z*SP) for y in TAM] for x in TAM for z in TAM]+[
-        [(-9,9,z),(0,0,z),(9,-9,z)] for z in [-9,0,9]]+[
-        [(9,9,z),(0,0,z),(-9,-9,z)] for z in [-9,0,9]]
+        [(x,a*x,z)  for x in [-9,0,9]] for a in [-1, 1] for z in [-9,0,9]] + [
+        [(x,y,a*x)  for x in [-9,0,9]] for a in [-1, 1] for y in [-9,0,9]] + [
+        [(x,y,a*y)  for y in [-9,0,9]] for a in [-1, 1] for x in [-9,0,9]]
+
 
 pecas = [box, sphere] * 14
 cores = [color.red, color.blue] * 14
