@@ -61,7 +61,7 @@ class Casa:
         def casas_ganhadoras(tira):
             tipo_tira = [Casa.CASAS[casa].tipo_peca() for casa in tira if isinstance(casa, tuple)]
             return tipo_tira == [1, 1, 1] or tipo_tira == [2, 2, 2]
-        tiras = [tira for tira in TIRAS if casas_ganhadoras(tira)]  # crie aqui um teste para saber se alguem venceu
+        tiras = [tira for tira in TIRASD[self.pos] if casas_ganhadoras(tira)]  # crie aqui um teste para saber se alguem venceu
         #print("testa_ganhou", tiras,  casas_ganhadoras(tiras))
         return tiras
 
@@ -114,20 +114,21 @@ class Tabuleiro:
     def joga(self, x, y, z):
         return self.pecas.pop().move_e_mostra(x, y, z)
 
-    def verifica_humano_ganha(self):
+    def verifica_humano_ganha(self, casa_anterior):
+        print(casa_anterior)
         def casas_ganhadoras(tira):
             tipo_tira = [Casa.CASAS[casa].tipo_peca() for casa in tira if isinstance(casa, tuple)]
             return tipo_tira == [1, 1, 0] or tipo_tira == [0, 1, 1] or tipo_tira == [1, 0, 1]
-        tiras = [tira for tira in TIRAS if casas_ganhadoras(tira)]  # crie aqui um teste para saber se alguem venceu
+        tiras = [tira for tira in TIRASD[casa_anterior] if casas_ganhadoras(tira)]  # crie aqui um teste para saber se alguem venceu
         #print("testa_ganhou", tiras,  casas_ganhadoras(tiras))
         return tiras
 
     def verifica_robo_ganha(self):
         pass
 
-    def jogada(self):
+    def jogada(self, casa_anterior=(0, 0, 0)):
         casa_da_jogada = choice(self.casas)  # choice(TABULEIRO)  # TABULEIRO[0]
-        humano_ganha = self.verifica_humano_ganha()
+        humano_ganha = self.verifica_humano_ganha(casa_anterior)
         if humano_ganha:
             casas = humano_ganha[0]
             print('humano_ganha:', humano_ganha, casas, "jogue aqui:", casas[2])
@@ -155,13 +156,13 @@ class Tabuleiro:
 
     def clicou(self, event):
         cc = self.cena.mouse.pick().pos  # pega a posição do objeto clicado pelo mouse
-        casa_clicada = (cc.x, cc.y, cc.z)  # cria uma tripla ordenada no espaço
+        clicada = casa_clicada = (cc.x, cc.y, cc.z)  # cria uma tripla ordenada no espaço
         if casa_clicada in Casa.CASAS.keys():  # procura a tripla na coleção de casas
             casa_clicada = Casa.CASAS[casa_clicada]
             if casa_clicada in self.casas:
                 self.remove(casa_clicada)
                 casa_clicada.clicou()  # chama o clicou da casa escolhida
-        self.jogada()
+        self.jogada(clicada)
 
 TABULEIRO = None
 def main():
