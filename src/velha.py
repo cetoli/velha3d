@@ -87,6 +87,11 @@ class Peca:
 
 
 class Tabuleiro:
+    # um dicionário que coleta movimentos ganhadores.
+    # O valor de cada chave é uma lista de tuplas onde cada tupla é:
+    # (número de vitórias com essa jogada, índice da jogada em Tabuleiro.CASAS)
+    # a chave é uma string com a lista de jogadas até agora separadas por espaço em branco
+    # exemplo: {'_':[(1, 1)],'_ 1':[],'_ 1 8':[(1, 18)],'_ 1 8 18 17':[(1, 26)]}
     HISTORY = {'_':[]}
     CASAS = []
     def __init__(self, cena):
@@ -107,6 +112,7 @@ class Tabuleiro:
     def registra_jogada_na_historia(self, jogada):
         #cria uma chave que é um texto com os indices das casas jogadas separadas por brancos
         self.jogadas += " %d" % Tabuleiro.CASAS.index(jogada)
+        # recupera as vitórias na história referentes a estas jogadas, inicia com [] se não acha
         self.vitorias_nesta_jogada = Tabuleiro.HISTORY.setdefault(self.jogadas, [])  # {"0":0, "1":0, "2":0})
 
     def remove(self, casa):
@@ -128,6 +134,7 @@ class Tabuleiro:
             marcador.visible = False
         if TABULEIRO and self.peca_robo == 2:
             self.jogada()
+        # alterna a vez de iniciar entre o humano e o robô
         self.peca_robo = 1 if self.peca_robo == 2 else 2
         #print([casa.tipo_peca() for casa in Casa.CASAS.values()])
         #print([casa.tipo_peca() for casa in self.casas])
@@ -156,10 +163,13 @@ class Tabuleiro:
             print('humano_ganha:', alguem_ganha, casas, "jogue aqui:", casa_vazia)
 
             casa_da_jogada = casa_vazia[0]
+        # AI: consulta a hitória de vitórias para repetir um lance vitorioso
         if self.vitorias_nesta_jogada and choice(range(10)) >-1:
+            # seleciona entre os palpites vitoriosos um que caia numa casa vazia
             palpite = [casa_do_indice(tentativa[1])
                 for tentativa in self.vitorias_nesta_jogada
                 if casa_do_indice(tentativa[1]) in self.casas]
+            # se exite um palpite possível seleciona o primeiro da lista ordenada
             if palpite:
                 casa_da_jogada = palpite[0]
         self.remove(casa_da_jogada)
@@ -180,19 +190,27 @@ class Tabuleiro:
         self._clica = self.inicia
         jogadas = self.jogadas.split()
         l = len(jogadas)-1
+        #AI : cria uma lista de chaves que representam as jogadas que levaram à vitória
         ganhadoras = [(" ".join(jogadas[:l-i]), int(jogadas[l-i]))
             for i in range(0, len(jogadas), 2)
             if not '_' in jogadas[l-i]]
         print( ganhadoras, jogadas, "-%s-"%self.jogadas, jogadas[:-0])
-        #return
+        #AI : atualiza a história adicionando uma vitória a cada tupla de jogada da lista
         for chave, jogada in ganhadoras:
+            # recupera o registro de vitórias representado por esta chave
             registros = Tabuleiro.HISTORY[chave]
+            # acha a tupla cuja jogada é a jogada usada nesta vitória
             registro = [par for par in registros if jogada == par[1]]
+            # remove esta tupla se existia, para que fique duplicada
             if registro:
                 registros.remove(registro[0])
+            # cria ou recupera a tupla vitoriosa
             ganhos, casa = registro[0] if registro else [0, int(jogada)]
+            # cria um novo registro de vitórias ordenado do mais vitorioso para o menso
             novos = sorted(registros + [(ganhos+1, casa)])
+            # evita um bug que existe na versão 2.1.3 do brython
             novos = novos if len(novos) ==1 else novos[::-1]
+            # Atualiza a história com esta nova lista de jogadas vitoriosas
             Tabuleiro.HISTORY[chave] = novos
         print(Tabuleiro.HISTORY)
 
