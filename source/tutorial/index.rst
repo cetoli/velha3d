@@ -34,6 +34,7 @@ Tutorial
    :caption: Contents:
    
    inicio.rst
+   listas.rst
 
 
 .. _Projeto Jogo da Velha: https://activufrj.nce.ufrj.br/wiki/carlo/Jogo_da_Velha_3D
