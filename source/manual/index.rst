@@ -27,6 +27,7 @@ Um jogo da velha construído para se aprender prograação Orientada a Objetos.
    :caption: Contents:
    
    modules.rst
+   listmodule.rst
 
 
 .. _Projeto Jogo da Velha: https://activufrj.nce.ufrj.br/wiki/carlo/Jogo_da_Velha_3D

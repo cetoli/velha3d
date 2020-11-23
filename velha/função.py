@@ -9,9 +9,14 @@ Changelog
 .. versionadded::    20.11
         Usando uma função.
 
+.. versionchanged::    20.11
+        Melhorando a documentação da função.
+
 """
 ESCOLHA = "Escolha uma casa do tabuleiro"
+"""Frase para pedir uma jogada."""
 FINAL = "Situação final do tabuleiro"
+"""Frase indicando o fim o do jogo."""
 TABULEIRO = """
     {}
     {} | {} | {}
@@ -20,9 +25,25 @@ TABULEIRO = """
     -----------
     {} | {} | {}
     """   
+"""Display mostrando a situação atual do tabuleiro."""
+
 
 def velha():
-    """AI is creating summary for velha
+    """Executa o joga da velha.
+    
+    Referências:
+    
+    casa
+     Lista contendo as casas do jogo.
+     
+    jogador
+     Marcador do jogador com a vez corrente.
+    
+    jogada
+     Índice da casa a ser preenchida.
+    
+    display_das_casas
+     Apresentação do conteúdo de cada casa: o índice se vazia ou marcador se cheia.
     """
     casa = [None]*9
     """A operação de multiplicar com a lista contendo um **None**
