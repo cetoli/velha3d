@@ -33,7 +33,7 @@ author = 'Carlo E. T. Oliveira'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '20.11'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
