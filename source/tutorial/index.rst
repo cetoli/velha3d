@@ -35,6 +35,7 @@ Tutorial
    
    inicio.rst
    listas.rst
+   classe.rst
 
 
 .. _Projeto Jogo da Velha: https://activufrj.nce.ufrj.br/wiki/carlo/Jogo_da_Velha_3D
